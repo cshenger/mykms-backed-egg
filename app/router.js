@@ -21,6 +21,8 @@ module.exports = app => {
   router.get(`${baseURL}/dict/algors`, controller.home.algors);
   router.get(`${baseURL}/dict/allAlgorWays`, controller.home.allAlgorWays);
   router.get(`${baseURL}/dict/users`, controller.home.users);
+  router.get(`${baseURL}/dict/keyAdminUsers`, controller.home.keyAdminUsers);
+  router.get(`${baseURL}/dict/keyAuditUsers`, controller.home.keyAuditUsers);
 
   // 登录
   router.post(`${baseURL}/login`, controller.login.login);

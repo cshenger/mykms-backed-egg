@@ -31,6 +31,18 @@ class HomeController extends BaseController {
     const users = await this.ctx.service.home.users();
     this.result(users);
   }
+
+  // 获取密钥管理员用户
+  async keyAdminUsers() {
+    const users = await this.ctx.service.home.keyAdminUsers();
+    this.result(users);
+  }
+
+  // 获取密钥审核员用户
+  async keyAuditUsers() {
+    const users = await this.ctx.service.home.keyAuditUsers();
+    this.result(users);
+  }
 }
 
 module.exports = HomeController;

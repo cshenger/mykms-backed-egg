@@ -73,6 +73,20 @@ class HomeService extends Service {
     const users = await this.app.mysql.query(sql);
     return users;
   }
+
+  // 获取密钥管理员用户
+  async keyAdminUsers() {
+    let sql = `select id, userName from users where roles like "%keyAdmin%"`;
+    const users = await this.app.mysql.query(sql);
+    return users;
+  }
+
+  // 获取密钥审核员用户
+  async keyAuditUsers() {
+    let sql = `select id, userName from users where roles like "%keyAudit%"`;
+    const users = await this.app.mysql.query(sql);
+    return users;
+  }
 }
 
 module.exports = HomeService;

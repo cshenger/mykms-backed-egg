@@ -157,8 +157,8 @@ class DashboardService extends Service {
   async statusKeys(params) {
     let keys = null;
 
-    if (params && !!params.createUser) {
-      let sql = `select * from theKeys where createUser like "%${params.createUser}%"`;
+    if (params && !!params.auditUser) {
+      let sql = `select * from theKeys where auditUser like "%${params.auditUser}%"`;
       keys = await this.app.mysql.query(sql);
     } else {
       keys = await this.app.mysql.select("theKeys");
