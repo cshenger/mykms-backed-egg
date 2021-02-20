@@ -127,6 +127,29 @@ class KeysService extends Service {
   async create(params) {
     const keys = await this.app.mysql.select('theKeys');
 
+    const rendeKey = async (params) => {
+      let backupkeys = await this.app.mysql.select('backupkeys', {
+        where: {
+          way: params.way
+        }
+      });
+      let myKey = null;
+      if (backupkeys.length > 0) {
+        let backkey = backupkeys[0];
+        myKey = {
+          key: backkey.key,
+          iv: backkey.iv
+        };
+        await this.app.mysql.delete('backupkeys', {
+          id: backkey.id
+        });
+      } else {
+        myKey = await createKey(params);
+      }
+
+      return myKey;
+    }
+
     let insertData = JSON.parse(JSON.stringify(params));
     if (!params.hasOwnProperty('id')) {
       insertData.id = `keys_${keys.length}_${Math.random().toFixed(8)}`;
@@ -139,9 +162,9 @@ class KeysService extends Service {
         code: user.id,
         value: user.userName
       });
-
       insertData.createDate = this.app.mysql.literals.now;
-      let myKey = await createKey(params);
+
+      let myKey = await rendeKey(params);
       insertData.mykey = myKey.key;
       insertData.iv = myKey.iv;
     } else {
@@ -154,7 +177,7 @@ class KeysService extends Service {
         insertData.mykey = skey.key;
         insertData.iv = skey.iv;
       } else {
-        let myKey = await createKey(params);
+        let myKey = await rendeKey(params);
         insertData.mykey = myKey.key;
         insertData.iv = myKey.iv;
       }

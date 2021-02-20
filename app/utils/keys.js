@@ -28,7 +28,7 @@ const keyWrite = async (params, str) => {
     }
   });
   cipher.on('end', () => {
-    console.log('密钥: ', encrypted);
+    console.log('加密: ', encrypted);
   });
 
   await cipher.write(str);
