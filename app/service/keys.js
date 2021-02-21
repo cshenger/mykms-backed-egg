@@ -137,7 +137,7 @@ class KeysService extends Service {
       if (backupkeys.length > 0) {
         let backkey = backupkeys[0];
         myKey = {
-          key: backkey.key,
+          key: backkey.mykey,
           iv: backkey.iv
         };
         await this.app.mysql.delete('backupkeys', {
