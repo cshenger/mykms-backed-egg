@@ -9,7 +9,7 @@ module.exports = options => {
         await next();
         // console.log(decode);
       } catch (error) {
-        ctx.status = 401;
+        // ctx.status = 401;
         ctx.body = {
           message: error.message,
         };
