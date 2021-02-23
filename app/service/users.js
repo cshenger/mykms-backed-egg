@@ -3,7 +3,8 @@
 const Service = require('egg').Service;
 const {
   pages,
-  getMd5Data
+  getMd5Data,
+  sqlPa
 } = require('../utils/index');
 
 class UsersService extends Service {
@@ -16,8 +17,10 @@ class UsersService extends Service {
     let searchData = {
       where: where,
     };
-    let m = (params.current - 1) * params.pageSize;
-    let n = params.pageSize;
+    const {
+      m,
+      n
+    } = sqlPa(params);
 
     // 查询权限表
     const roles = await this.app.mysql.select("roles");
@@ -26,7 +29,7 @@ class UsersService extends Service {
     // let sql = `select id, loginName, userName, roles from users where loginName like "%${where.hasOwnProperty('loginName') ? where.loginName : ''}%" LIMIT ${searchData.offset||0}, ${searchData.limit||users.length}`;
     // let sql = `select id, loginName, userName, roles from users where loginName like "%${where.hasOwnProperty('loginName') ? where.loginName : ''}%"`;
     let sqlWhere = `loginName like "%${where.hasOwnProperty('loginName') ? where.loginName : ''}%"`;
-    let sql = `select id, loginName, userName, roles, (SELECT count(*) FROM users where ${sqlWhere}) AS total from users where ${sqlWhere}`;
+    let sql = `select id, loginName, userName, roles, (SELECT count(*) FROM users where ${sqlWhere}) AS total from users where ${sqlWhere} limit ${m},${n}`;
     const list = await this.app.mysql.query(sql);
     let pag = pages(params);
     // let records = list.slice(pag.start, pag.end);

@@ -6,7 +6,8 @@ const {
 const {
   pages,
   renderWhere,
-  selLike
+  selLike,
+  sqlPa
 } = require('../utils/index');
 const moment = require('moment');
 
@@ -47,8 +48,10 @@ class KeysService extends Service {
       where: where
     }
     let list = null;
-    let m = (params.current - 1) * params.pageSize;
-    let n = params.pageSize;
+    const {
+      m,
+      n
+    } = sqlPa(params);
 
     if (params.type == 'using') {
       // let sql = `select * from theKeys where ${selLike(where, 'id')} and ${selLike(where, 'keyName')} and ${selLike(where, 'algorithmName')} and status <> 4`;

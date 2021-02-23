@@ -10,15 +10,13 @@ function isEmptyObject(obj) {
 }
 
 // 分页函数
-function pageSearch(params, searchData) {
-  if (isEmptyObject(searchData.where)) {
-    delete searchData.where;
-  }
-  if (!!params && params.hasOwnProperty('pageSize')) {
-    searchData.limit = parseInt(params.pageSize);
-  }
-  if (!!params && params.hasOwnProperty('current')) {
-    searchData.offset = parseInt(params.current) * parseInt(params.pageSize) - parseInt(params.pageSize);
+function sqlPa(params) {
+  let m = (params.current - 1) * params.pageSize;
+  let n = params.pageSize;
+
+  return {
+    m,
+    n
   }
 }
 
@@ -57,7 +55,7 @@ function selLike(where, name) {
 
 module.exports = {
   isEmptyObject,
-  pageSearch,
+  sqlPa,
   getMd5Data,
   pages,
   renderWhere,
