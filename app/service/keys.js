@@ -47,17 +47,24 @@ class KeysService extends Service {
       where: where
     }
     let list = null;
+    let m = (params.current - 1) * params.pageSize;
+    let n = params.pageSize;
 
     if (params.type == 'using') {
-      let sql = `select * from theKeys where ${selLike(where, 'id')} and ${selLike(where, 'keyName')} and ${selLike(where, 'algorithmName')} and status <> 4`;
+      // let sql = `select * from theKeys where ${selLike(where, 'id')} and ${selLike(where, 'keyName')} and ${selLike(where, 'algorithmName')} and status <> 4`;
+      let sqlWhere = `${selLike(where, 'id')} and ${selLike(where, 'keyName')} and ${selLike(where, 'algorithmName')} and status <> 4`;
+      let sql = `select * ,( SELECT count(*) FROM theKeys where ${sqlWhere}) AS total from theKeys where ${sqlWhere} limit ${m},${n}`;
       list = await this.app.mysql.query(sql);
+      console.log(list);
     } else if (params.type == 'history') {
-      let sql = `select * from theKeys where ${selLike(where, 'id')} and ${selLike(where, 'keyName')} and ${selLike(where, 'algorithmName')} and ${selLike(where, 'status')}`;
+      let sqlWhere = `${selLike(where, 'id')} and ${selLike(where, 'keyName')} and ${selLike(where, 'algorithmName')} and ${selLike(where, 'status')}`;
+      let sql = `select *,( SELECT count(*) FROM theKeys where ${sqlWhere}) AS total from theKeys where ${sqlWhere} limit ${m},${n}`;
       list = await this.app.mysql.query(sql);
     }
 
     let pag = pages(params);
-    let records = list.slice(pag.start, pag.end);
+    // let records = list.slice(pag.start, pag.end);
+    let records = list;
 
     const renderList = async () => {
       for (let item of records) {
@@ -108,7 +115,8 @@ class KeysService extends Service {
 
     return {
       records,
-      total: list.length
+      total: list[0].total || 0
+      // total: list.length
     }
   }
 

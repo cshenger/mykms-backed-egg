@@ -16,16 +16,21 @@ class UsersService extends Service {
     let searchData = {
       where: where,
     };
+    let m = (params.current - 1) * params.pageSize;
+    let n = params.pageSize;
 
     // 查询权限表
     const roles = await this.app.mysql.select("roles");
 
     // const records = await this.app.mysql.select('users', searchData);
     // let sql = `select id, loginName, userName, roles from users where loginName like "%${where.hasOwnProperty('loginName') ? where.loginName : ''}%" LIMIT ${searchData.offset||0}, ${searchData.limit||users.length}`;
-    let sql = `select id, loginName, userName, roles from users where loginName like "%${where.hasOwnProperty('loginName') ? where.loginName : ''}%"`;
+    // let sql = `select id, loginName, userName, roles from users where loginName like "%${where.hasOwnProperty('loginName') ? where.loginName : ''}%"`;
+    let sqlWhere = `loginName like "%${where.hasOwnProperty('loginName') ? where.loginName : ''}%"`;
+    let sql = `select id, loginName, userName, roles, (SELECT count(*) FROM users where ${sqlWhere}) AS total from users where ${sqlWhere}`;
     const list = await this.app.mysql.query(sql);
     let pag = pages(params);
-    let records = list.slice(pag.start, pag.end);
+    // let records = list.slice(pag.start, pag.end);
+    let records = list;
 
     records.forEach(user => {
       let userRoles = user.roles.split(",");
@@ -39,7 +44,8 @@ class UsersService extends Service {
 
     return {
       records,
-      total: records.length
+      // total: records.length
+      total: list[0].total || 0
     }
   }
 
