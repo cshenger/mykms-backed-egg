@@ -42,6 +42,7 @@ module.exports = app => {
   router.delete(`${baseURL}/users/delete`, jwt, controller.users.delete);
   router.get(`${baseURL}/users/auditList`, jwt, controller.users.auditList);
   router.get(`${baseURL}/users/userList`, jwt, controller.users.userList);
+  router.post(`${baseURL}/users/editPassword`, jwt, controller.users.editPassword);
 
   // 算法管理
   router.get(`${baseURL}/algor/list`, jwt, controller.algor.list);

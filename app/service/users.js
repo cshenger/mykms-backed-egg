@@ -48,7 +48,7 @@ class UsersService extends Service {
     return {
       records,
       // total: records.length
-      total: list[0].total || 0
+      total: list.length > 0 ? list[0].total : 0
     }
   }
 
@@ -57,9 +57,9 @@ class UsersService extends Service {
     const users = await this.app.mysql.select('users');
     let insertData = JSON.parse(JSON.stringify(params));
     insertData.roles = insertData.roles.join(",");
+    insertData.hexPassword = getMd5Data(params.password);
     if (!params.hasOwnProperty('id')) {
       insertData.id = `user_${users.length}_${Math.random().toFixed(5)}`;
-      insertData.hexPassword = getMd5Data(params.password);
     }
 
     const findUsers = await this.app.mysql.select('users', {
@@ -148,6 +148,36 @@ class UsersService extends Service {
     let sql = `select id, loginName, userName from users where roles like "%keyUser%"`;
     const list = await this.app.mysql.query(sql);
     return list;
+  }
+
+  // 修改密码
+  async editPassword(params) {
+    const user = await this.app.mysql.get('users', {
+      id: params.userId
+    });
+    if (user.password !== params.oldPass) {
+      return {
+        code: 500,
+        success: false,
+        message: '旧密码有误'
+      }
+    } else {
+      let insertData = {
+        id: params.userId,
+        password: params.newPass,
+        hexPassword: getMd5Data(params.newPass)
+      }
+      const result = await this.app.mysql.update('users', insertData);
+      if (result.affectedRows === 1) {
+        return result;
+      } else {
+        return {
+          code: 500,
+          success: false,
+          message: '更新失败'
+        }
+      }
+    }
   }
 }
 

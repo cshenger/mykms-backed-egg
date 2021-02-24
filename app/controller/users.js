@@ -81,6 +81,17 @@ class UsersController extends BaseController {
     const users = await this.ctx.service.users.userList();
     this.result(users);
   }
+
+  // 修改密码
+  async editPassword() {
+    const body = this.ctx.request.body;
+    const result = await this.ctx.service.users.editPassword(body);
+    if (!!result.code && result.code != 200) {
+      this.result(null, result.code, result.success, result.message);
+    } else {
+      this.result(result);
+    }
+  }
 }
 
 module.exports = UsersController;
