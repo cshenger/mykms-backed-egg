@@ -2,7 +2,19 @@
 
 const Controller = require('egg').Controller;
 
+/**
+ * @controller 登录
+ */
+
 class LoginController extends Controller {
+  /**
+   * @summary 登录
+   * @description 密钥系统登录
+   * @Router post /api/login
+   * @Request body theLogin * body
+   * @Response 200 theLogin 返回结果
+   */
+
   async login() {
     const {
       ctx,

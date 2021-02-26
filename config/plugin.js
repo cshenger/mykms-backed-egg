@@ -15,9 +15,15 @@ const email = {
   package: 'egg-mail',
 };
 
+const swaggerdoc = {
+  enable: true,
+  package: 'egg-swagger-doc',
+};
+
 /** @type Egg.EggPlugin */
 module.exports = {
   mysql,
   jwt,
-  email
+  email,
+  swaggerdoc
 };
