@@ -150,7 +150,7 @@ class DashboardService extends Service {
       }
     });
 
-    return data;
+    return data.splice(0, 10);
   }
 
   // 密钥状态统计
@@ -195,9 +195,23 @@ class DashboardService extends Service {
       xData.push(`${params.year}-${params.month}-${i+1 > 9 ? i+1 : '0'+(i+1)}`);
     }
 
-    let yData = [];
+    let yBaseData = [];
     for (let i = 0; i < days; i++) {
-      yData.push(0);
+      yBaseData.push(0);
+    }
+
+    let yData = [];
+    for (let i = 0; i <= 4; i++) {
+      yData.push({
+        name: statusDict[i],
+        type: 'line',
+        stack: '总量',
+        areaStyle: {},
+        emphasis: {
+          focus: 'series'
+        },
+        data: JSON.parse(JSON.stringify(yBaseData))
+      })
     }
 
     let keys = null;
@@ -210,8 +224,9 @@ class DashboardService extends Service {
 
     keys.forEach(key => {
       let date = moment(new Date(key.createDate)).format("YYYY-MM-DD");
+      let status = key.status;
       if (xData.indexOf(date) != -1) {
-        yData[xData.indexOf(date)] += 1;
+        yData[status].data[xData.indexOf(date)] += 1;
       }
     });
 
