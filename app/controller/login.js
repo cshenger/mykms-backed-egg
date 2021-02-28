@@ -35,17 +35,26 @@ class LoginController extends Controller {
         expiresIn: '60m'
       });
 
+      let insertData = {
+        token: token,
+        userId: user[0].id,
+        loginName: user[0].loginName,
+        userName: user[0].userName,
+        userRole: user[0].roles.split(",")
+      }
+
+      let userTokenData = JSON.parse(JSON.stringify(insertData));
+      userTokenData.id = userTokenData.userId;
+      delete userTokenData.userId;
+      userTokenData.userRole = userTokenData.userRole.join(",");
+
+      await ctx.service.login.changeUserToken(userTokenData);
+
       ctx.body = {
         code: 200,
         success: true,
         message: '登陆成功',
-        data: {
-          token: token,
-          userId: user[0].id,
-          loginName: user[0].loginName,
-          userName: user[0].userName,
-          userRole: user[0].roles.split(",")
-        },
+        data: insertData,
       }
     } else {
       ctx.body = {

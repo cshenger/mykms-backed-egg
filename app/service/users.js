@@ -131,6 +131,9 @@ class UsersService extends Service {
     const user = await this.app.mysql.delete('users', {
       id: id
     });
+    await this.app.mysql.delete('usertokens', {
+      id: id
+    });
     return {
       user
     }

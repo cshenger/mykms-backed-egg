@@ -1,7 +1,18 @@
 const BaseController = require('./base');
 
+/**
+ * @controller 账户管理
+ */
+
 class UsersController extends BaseController {
   // 查询列表
+  /**
+   * @summary 查询列表
+   * @description 获取所有用户的信息
+   * @router get /api/users/list
+   * @request query string loginName 登录用户名
+   * @response 200 usersList 返回结果
+   */
   async list() {
     const ctx = this.ctx;
     const params = ctx.query;
@@ -10,6 +21,21 @@ class UsersController extends BaseController {
   }
 
   // 插入数据
+  /**
+   * @summary 添加用户
+   * @description 添加一条新用户
+   * @Router post /api/users/add
+   * @Request body usersAdd * body
+   * @Response 200 baseRespnse 返回结果
+   */
+
+  /**
+   * @summary 编辑用户
+   * @description 编辑一条新用户
+   * @Router put /api/users/update
+   * @Request body usersAdd * body
+   * @Response 200 baseRespnse 返回结果
+   */
   async create() {
     const {
       ctx,
@@ -57,6 +83,13 @@ class UsersController extends BaseController {
   }
 
   // 查询具体用户
+  /**
+   * @summary 具体用户
+   * @description 根据ID查询具体用户信息
+   * @router get /api/users/user
+   * @request query string id 用户具体ID
+   * @response 200 usersUser 返回结果
+   */
   async info() {
     const ctx = this.ctx;
     const userId = ctx.query.id;
@@ -65,6 +98,13 @@ class UsersController extends BaseController {
   }
 
   // 删除用户
+  /**
+   * @summary 删除用户
+   * @description 删除一条新用户
+   * @Router delete /api/users/delete
+   * @Request body string id * 删除用户的id
+   * @Response 200 baseRespnse 返回结果
+   */
   async delete() {
     const user = await this.ctx.service.users.delete(this.ctx.query.id);
     this.result(null, 200, true, '删除成功');

@@ -55,7 +55,7 @@ class KeysService extends Service {
 
     if (params.type == 'using') {
       // let sql = `select * from theKeys where ${selLike(where, 'id')} and ${selLike(where, 'keyName')} and ${selLike(where, 'algorithmName')} and status <> 4`;
-      let sqlWhere = `${selLike(where, 'id')} and ${selLike(where, 'keyName')} and ${selLike(where, 'algorithmName')} and status <> 4`;
+      let sqlWhere = `${selLike(where, 'id')} and ${selLike(where, 'keyName')} and ${selLike(where, 'algorithmName')} and ${selLike(where, 'status')} and status <> 4`;
       let sql = `select * ,( SELECT count(*) FROM theKeys where ${sqlWhere}) AS total from theKeys where ${sqlWhere} limit ${m},${n}`;
       list = await this.app.mysql.query(sql);
     } else if (params.type == 'history') {
