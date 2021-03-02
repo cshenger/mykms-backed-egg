@@ -35,15 +35,10 @@ module.exports = {
     },
   },
 
-  // usersAudits = {
-  //   id: {
-  //     type: 'string'
-  //   },
-  //   loginName: {
-  //     type: 'string'
-  //   },
-  //   userName: {
-  //     type: 'string'
-  //   },
-  // }
+  usersAudits: {
+    data: {
+      type: 'array',
+      itemType: 'usersAudit'
+    }
+  }
 }

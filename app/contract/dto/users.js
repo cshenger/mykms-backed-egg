@@ -16,4 +16,16 @@ exports.usersListModel = {
   userName: {
     type: 'string'
   },
-}
+};
+
+exports.usersAudit = {
+  id: {
+    type: 'string'
+  },
+  loginName: {
+    type: 'string'
+  },
+  userName: {
+    type: 'string'
+  },
+};

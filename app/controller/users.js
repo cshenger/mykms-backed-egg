@@ -28,14 +28,6 @@ class UsersController extends BaseController {
    * @Request body usersAdd * body
    * @Response 200 baseRespnse 返回结果
    */
-
-  /**
-   * @summary 编辑用户
-   * @description 编辑一条新用户
-   * @Router put /api/users/update
-   * @Request body usersAdd * body
-   * @Response 200 baseRespnse 返回结果
-   */
   async create() {
     const {
       ctx,
@@ -82,6 +74,16 @@ class UsersController extends BaseController {
     }
   }
 
+  // 仅仅因为这里需要编辑文档
+  /**
+   * @summary 编辑用户
+   * @description 编辑一条新用户
+   * @Router put /api/users/update
+   * @Request body usersEdit * body
+   * @Response 200 baseRespnse 返回结果
+   */
+  async _update() {}
+
   // 查询具体用户
   /**
    * @summary 具体用户
@@ -111,18 +113,39 @@ class UsersController extends BaseController {
   }
 
   // 查找审核人
+  /**
+   * @summary 查找审核人
+   * @description 提交密钥时获取审核人列表
+   * @router get /api/users/auditList
+   * @request path
+   * @response 200 usersAudits 返回结果
+   */
   async auditList() {
     const users = await this.ctx.service.users.auditList();
     this.result(users);
   }
 
   // 查找使用人
+  /**
+   * @summary 查找使用人
+   * @description 新增编辑密钥时获取密钥使用人列表
+   * @router get /api/users/userList
+   * @request path
+   * @response 200 usersAudits 返回结果
+   */
   async userList() {
     const users = await this.ctx.service.users.userList();
     this.result(users);
   }
 
   // 修改密码
+  /**
+   * @summary 修改密码
+   * @description 用户可在右上角修改自己的账户密码
+   * @Router post /api/users/editPassword
+   * @Request body editPassword * body
+   * @Response 200 baseRespnse 返回结果
+   */
   async editPassword() {
     const body = this.ctx.request.body;
     const result = await this.ctx.service.users.editPassword(body);
