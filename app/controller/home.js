@@ -18,7 +18,7 @@ class HomeController extends BaseController {
    * @description 查询全部角色
    * @router get /api/dict/roles
    * @request path
-   * @response 200
+   * @response 200 dictRoles 返回结果
    */
   async roles() {
     const roles = await this.ctx.service.home.roles();
@@ -31,7 +31,7 @@ class HomeController extends BaseController {
    * @description 获取算法名称分类
    * @router get /api/dict/algors
    * @request path
-   * @response 200
+   * @response 200 dictAlgors 返回结果
    */
   async algors() {
     const algors = await this.ctx.service.home.algors();
@@ -44,7 +44,7 @@ class HomeController extends BaseController {
    * @description 算法模式的下拉查询
    * @router get /api/dict/allAlgorWays
    * @request path
-   * @response 200
+   * @response 200 daictWay 返回结果
    */
   async allAlgorWays() {
     const allAlgorWays = await this.ctx.service.home.allAlgorWays();
@@ -57,7 +57,7 @@ class HomeController extends BaseController {
    * @description 获取所有用户下拉
    * @router get /api/dict/users
    * @request path
-   * @response 200
+   * @response 200 dictUsers 返回结果
    */
   async users() {
     const users = await this.ctx.service.home.users();
@@ -70,7 +70,7 @@ class HomeController extends BaseController {
    * @description 获取密钥管理员用户下拉
    * @router get /api/dict/keyAdminUsers
    * @request path
-   * @response 200
+   * @response 200 dictUsers 返回结果
    */
   async keyAdminUsers() {
     const users = await this.ctx.service.home.keyAdminUsers();
@@ -83,7 +83,7 @@ class HomeController extends BaseController {
    * @description 获取密钥审核员用户下拉
    * @router get /api/dict/keyAuditUsers
    * @request path
-   * @response 200
+   * @response 200 dictUsers 返回结果
    */
   async keyAuditUsers() {
     const users = await this.ctx.service.home.keyAuditUsers();

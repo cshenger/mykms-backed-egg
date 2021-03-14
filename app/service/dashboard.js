@@ -67,16 +67,28 @@ class DashboardService extends Service {
       let keys = await this.app.mysql.query(sql);
       let now = Date.now();
 
-      keys = keys.filter((key) => {
+      let deadlineKeys = keys.filter((key) => {
         let deadTime = new Date(key.deadDate).getTime();
         let jet = parseInt(deadTime) - parseInt(now);
         return jet >= 0 && jet <= 1000 * 60 * 60 * 24;
       });
 
-      keys.forEach(key => {
+      deadlineKeys.forEach(key => {
         todos.push({
           id: key.id,
           text: `${key.keyName} 密钥还有一天就要过期了，请尽快处理。`,
+          activeKey: 'using',
+        })
+      });
+
+      let NotOkKeys = keys.filter((key) => {
+        return key.status == 3;
+      });
+
+      NotOkKeys.forEach(key => {
+        todos.push({
+          id: key.id,
+          text: `${key.keyName} 密钥审核未通过，请尽快处理。`,
           activeKey: 'using',
         })
       });
