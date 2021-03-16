@@ -16,8 +16,22 @@ class OperationController extends BaseController {
     const body = ctx.request.body;
     const result = await ctx.service.operation.submit(body);
     if (!!result.code && result.code != 200) {
+      // 插入操作文档
+      await this.ctx.service.home.addOperaLog({
+        url: '/app/operation/submit',
+        method: 'POST',
+        action: '修改',
+        status: 0
+      });
       this.result(null, 4001, false, '操作失败');
     } else {
+      // 插入操作文档
+      await this.ctx.service.home.addOperaLog({
+        url: '/app/operation/submit',
+        method: 'POST',
+        action: '修改',
+        status: 1
+      });
       this.result(result);
     }
   }

@@ -36,6 +36,24 @@ class UsersController extends BaseController {
     const body = ctx.request.body;
     const result = await ctx.service.users.create(body);
     if (!!result.code && result.code != 200) {
+      if (!body.id) {
+        // 插入操作文档
+        await this.ctx.service.home.addOperaLog({
+          url: '/app/users/add',
+          method: 'POST',
+          action: '新增',
+          status: 0
+        });
+      } else {
+        // 插入操作文档
+        await this.ctx.service.home.addOperaLog({
+          url: '/app/users/update',
+          method: 'PUT',
+          action: '修改',
+          status: 0
+        });
+      }
+
       this.result(null, result.code, result.success, result.message);
     } else {
       // 发送邮件
@@ -70,6 +88,25 @@ class UsersController extends BaseController {
           alternative: true
         }]
       );
+
+      if (!body.id) {
+        // 插入操作文档
+        await this.ctx.service.home.addOperaLog({
+          url: '/app/users/add',
+          method: 'POST',
+          action: '新增',
+          status: 1
+        });
+      } else {
+        // 插入操作文档
+        await this.ctx.service.home.addOperaLog({
+          url: '/app/users/update',
+          method: 'PUT',
+          action: '修改',
+          status: 1
+        });
+      }
+
       this.result(mailresult);
     }
   }
@@ -109,6 +146,13 @@ class UsersController extends BaseController {
    */
   async delete() {
     const user = await this.ctx.service.users.delete(this.ctx.query.id);
+    // 插入操作文档
+    await this.ctx.service.home.addOperaLog({
+      url: '/app/users/delete',
+      method: 'DELETE',
+      action: '删除',
+      status: 1
+    });
     this.result(null, 200, true, '删除成功');
   }
 
@@ -150,8 +194,22 @@ class UsersController extends BaseController {
     const body = this.ctx.request.body;
     const result = await this.ctx.service.users.editPassword(body);
     if (!!result.code && result.code != 200) {
+      // 插入操作文档
+      await this.ctx.service.home.addOperaLog({
+        url: '/app/users/editPassword',
+        method: 'PUT',
+        action: '修改',
+        status: 0
+      });
       this.result(null, result.code, result.success, result.message);
     } else {
+      // 插入操作文档
+      await this.ctx.service.home.addOperaLog({
+        url: '/app/users/editPassword',
+        method: 'PUT',
+        action: '修改',
+        status: 1
+      });
       this.result(result);
     }
   }

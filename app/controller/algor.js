@@ -33,8 +33,22 @@ class AlgorController extends BaseController {
     const body = this.ctx.request.body;
     const result = await this.ctx.service.algor.toggle(body);
     if (!!result.code && result.code != 200) {
+      // 插入操作文档
+      await this.ctx.service.home.addOperaLog({
+        url: '/app/algor/toggle',
+        method: 'PUT',
+        action: '修改',
+        status: 0
+      });
       this.result(null, result.code, result.success, result.message);
     } else {
+      // 插入操作文档
+      await this.ctx.service.home.addOperaLog({
+        url: '/app/algor/toggle',
+        method: 'PUT',
+        action: '修改',
+        status: 1
+      });
       this.result(result);
     }
   }

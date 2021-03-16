@@ -61,4 +61,7 @@ module.exports = app => {
 
   // 操作使用
   router.post(`${baseURL}/operation/submit`, jwt, controller.operation.submit);
+
+  // 操作日志
+  router.get(`${baseURL}/operaLog/list`, jwt, controller.operaLog.list);
 };

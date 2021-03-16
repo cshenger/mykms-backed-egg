@@ -50,6 +50,17 @@ class LoginController extends Controller {
 
       await ctx.service.login.changeUserToken(userTokenData);
 
+      // 插入操作文档
+      await ctx.service.home.addOperaLog({
+        loginName: user[0].loginName,
+        userName: user[0].userName,
+        userId: user[0].id,
+        url: '/app/login',
+        method: 'POST',
+        action: '登录',
+        status: 1
+      });
+
       ctx.body = {
         code: 200,
         success: true,
@@ -57,6 +68,17 @@ class LoginController extends Controller {
         data: insertData,
       }
     } else {
+      // 插入操作文档
+      await ctx.service.home.addOperaLog({
+        loginName: user[0].loginName,
+        userName: user[0].userName,
+        userId: user[0].id,
+        url: '/app/login',
+        method: 'POST',
+        action: '登录',
+        status: 0
+      });
+
       ctx.body = {
         code: 4001,
         success: false,

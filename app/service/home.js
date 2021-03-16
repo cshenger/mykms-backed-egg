@@ -1,6 +1,9 @@
 'use strict';
 
 const Service = require('egg').Service;
+const {
+  secret
+} = require('../../config/others')
 
 class HomeService extends Service {
   // 获取角色
@@ -69,7 +72,7 @@ class HomeService extends Service {
 
   // 获取所有用户
   async users() {
-    let sql = `select id, userName from users`;
+    let sql = `select id, userName, loginName from users`;
     const users = await this.app.mysql.query(sql);
     return users;
   }
@@ -86,6 +89,31 @@ class HomeService extends Service {
     let sql = `select id, userName from users where roles like "%keyAudit%"`;
     const users = await this.app.mysql.query(sql);
     return users;
+  }
+
+  // 添加操作日志的方法
+  async addOperaLog(params) {
+    let userData = {
+      operaDate: this.app.mysql.literals.now
+    };
+    if (this.ctx.request.header.authorization) {
+      const token = this.ctx.request.header.authorization;
+      const decode = this.ctx.app.jwt.verify(token, secret);
+      const user = await this.app.mysql.get('usertokens', {
+        loginName: decode.loginName
+      });
+
+      userData = {
+        loginName: user.loginName,
+        userName: user.userName,
+        userId: user.id,
+        operaDate: this.app.mysql.literals.now
+      }
+    }
+    let insertData = Object.assign(userData, params);
+
+    const result = await this.app.mysql.insert('operalog', insertData);
+    return result;
   }
 }
 

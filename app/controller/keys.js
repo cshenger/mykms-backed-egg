@@ -71,8 +71,44 @@ class KeysController extends BaseController {
     }
     const result = await ctx.service.keys.create(body);
     if (!!result.code && result.code != 200) {
+      if (!body.id) {
+        // 插入操作文档
+        await this.ctx.service.home.addOperaLog({
+          url: '/app/keys/add',
+          method: 'POST',
+          action: '新增',
+          status: 0
+        });
+      } else {
+        // 插入操作文档
+        await this.ctx.service.home.addOperaLog({
+          url: '/app//keys/update',
+          method: 'PUT',
+          action: '修改',
+          status: 0
+        });
+      }
+
       this.result(null, result.code, result.success, result.message);
     } else {
+      if (!body.id) {
+        // 插入操作文档
+        await this.ctx.service.home.addOperaLog({
+          url: '/app/keys/add',
+          method: 'POST',
+          action: '新增',
+          status: 1
+        });
+      } else {
+        // 插入操作文档
+        await this.ctx.service.home.addOperaLog({
+          url: '/app//keys/update',
+          method: 'PUT',
+          action: '修改',
+          status: 1
+        });
+      }
+
       this.result(result);
     }
   }
@@ -96,6 +132,13 @@ class KeysController extends BaseController {
    */
   async delete() {
     const key = await this.ctx.service.keys.delete(this.ctx.query.id);
+    // 插入操作文档
+    await this.ctx.service.home.addOperaLog({
+      url: '/app/keys/delete',
+      method: 'DELETE',
+      action: '删除',
+      status: 1
+    });
     this.result(null, 200, true, '删除成功');
   }
 
@@ -111,8 +154,22 @@ class KeysController extends BaseController {
     const body = this.ctx.request.body;
     const result = await this.ctx.service.keys.send(body);
     if (!!result.code && result.code != 200) {
+      // 插入操作文档
+      await this.ctx.service.home.addOperaLog({
+        url: '/app/keys/send',
+        method: 'PUT',
+        action: '修改',
+        status: 0
+      });
       this.result(null, result.code, result.success, result.message);
     } else {
+      // 插入操作文档
+      await this.ctx.service.home.addOperaLog({
+        url: '/app/keys/send',
+        method: 'PUT',
+        action: '修改',
+        status: 1
+      });
       this.result(result);
     }
   }
@@ -129,8 +186,22 @@ class KeysController extends BaseController {
     const body = this.ctx.request.body;
     const result = await this.ctx.service.keys.audit(body);
     if (!!result.code && result.code != 200) {
+      // 插入操作文档
+      await this.ctx.service.home.addOperaLog({
+        url: '/app/keys/audit',
+        method: 'PUT',
+        action: '修改',
+        status: 0
+      });
       this.result(null, result.code, result.success, result.message);
     } else {
+      // 插入操作文档
+      await this.ctx.service.home.addOperaLog({
+        url: '/app/keys/audit',
+        method: 'PUT',
+        action: '修改',
+        status: 1
+      });
       this.result(result);
     }
   }
