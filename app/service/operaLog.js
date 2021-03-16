@@ -23,7 +23,6 @@ class OperaLogService extends Service {
     let operaDateSql = !!params.startTime ? `and operaDate>='${params.startTime}' and operaDate<='${params.endTime}'` : "";
     let sqlWhere = `${selLike(where, 'userId')} and ${selLike(where, 'method')} and ${selLike(where, 'action')} ${operaDateSql}`;
     let sql = `select * ,( SELECT count(*) FROM operaLog where ${sqlWhere} order by operaDate desc) AS total from operaLog where ${sqlWhere} order by operaDate desc limit ${m},${n}`;
-    console.log(sql);
     let list = await this.app.mysql.query(sql);
     let records = list;
 
