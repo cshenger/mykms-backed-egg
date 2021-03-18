@@ -70,9 +70,9 @@ class LoginController extends Controller {
     } else {
       // 插入操作文档
       await ctx.service.home.addOperaLog({
-        loginName: user[0].loginName,
-        userName: user[0].userName,
-        userId: user[0].id,
+        loginName: loginName,
+        userName: "",
+        userId: "",
         url: '/app/login',
         method: 'POST',
         action: '登录',
