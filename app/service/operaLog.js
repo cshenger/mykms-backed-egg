@@ -37,7 +37,7 @@ class OperaLogService extends Service {
 
     return {
       records,
-      // total: list.length > 0 ? list[0].total : 0
+      total: list.length > 0 ? list[0].total : 0
       // total: list.length
     }
   }
